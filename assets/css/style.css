@@ -75,3 +75,7 @@ html { scroll-behavior: smooth; }
     --swiper-theme-color: #d97706; /* Amber-600 untuk pagination dot */
     --swiper-navigation-color: #ffffff; /* Putih untuk panah kiri/kanan */
 }
+
+#theme-grid {
+    transition: opacity 0.4s ease-in-out;
+}
