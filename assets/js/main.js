@@ -438,32 +438,102 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function Swiper Tema & lain-lain di bawah...
 });
 
-/* assets/js/main.js */
+/* --- RAYA THEME GRID SYSTEM --- */
 
-// ... (Kekalkan kod Homepage Slideshow asal di atas) ...
-// ... (Kekalkan initRayaHero function background asal di atas) ...
-
-/* --- 1. RAYA SWIPER INIT --- */
 document.addEventListener('DOMContentLoaded', () => {
-    // Kalau wujud elemen Swiper dalam page, baru init
-    if(document.querySelector('.themeSwiper')) {
-        new Swiper(".themeSwiper", {
-            effect: "cards",
-            grabCursor: true,
-            initialSlide: 1, // Start slide ke-2 (tengah sikit)
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true // Stop bila hover
-            },
-            cardsEffect: {
-                perSlideOffset: 12, // Jarak kad
-                perSlideRotate: 2, 
-                slideShadows: true,
-            },
-        });
-    }
+    // Jalankan filter 'all' sebaik sahaja website buka
+    if(typeof filterThemes === 'function') filterThemes('all');
 });
+
+function filterThemes(type) {
+    const gridContainer = document.getElementById('theme-grid');
+    if(!gridContainer || typeof rayaThemesDetail === 'undefined') return;
+
+    // 1. UPDATE STYLE BUTANG FILTER
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        // Reset jadi butang putih biasa
+        btn.className = "filter-btn bg-white text-gray-500 border border-gray-200 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:border-gray-400 transition cursor-pointer";
+    });
+
+    // Highlight butang yang aktif ikut warna
+    const activeBtn = document.getElementById(`filter-${type}`);
+    if(activeBtn) {
+        if(type === 'family') activeBtn.className = "filter-btn bg-green-50 text-green-700 border border-green-600 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-md transition transform scale-105";
+        else if(type === 'couple') activeBtn.className = "filter-btn bg-pink-50 text-pink-600 border border-pink-500 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-md transition transform scale-105";
+        else activeBtn.className = "filter-btn bg-black text-white border border-black px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-md transition transform scale-105"; // All
+    }
+
+    // 2. GENERATE KAD (Render Logic)
+    gridContainer.innerHTML = ''; // Kosongkan grid dulu
+    
+    // Animasi fade in
+    gridContainer.style.opacity = 0;
+
+    for (const [key, val] of Object.entries(rayaThemesDetail)) {
+        
+        // TAPISAN (FILTER LOGIC)
+        // Kalau type 'all', tunjuk semua.
+        // Kalau type specific (cth 'family'), tunjuk yg sama type je.
+        if (type !== 'all' && val.type !== type) continue;
+
+        // Tentukan Warna Tag ikut data.js
+        // Kita extract dari colorClass tapi ambil text-color dia je untuk simple border
+        const badgeColorClass = val.type === 'couple' 
+            ? 'bg-white/90 text-pink-600 border-pink-200' 
+            : 'bg-white/90 text-green-700 border-green-200';
+
+        const labelText = val.type === 'couple' ? 'Couple' : 'Family';
+
+        // HTML TEMPLATE KAD
+        const cardHTML = `
+            <div onclick="openThemeDetails('${key}')" class="group relative rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-2xl transition duration-500 bg-gray-100 aspect-[3/4]">
+                
+                <!-- GAMBAR -->
+                <img src="${val.images[0]}" loading="lazy" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                
+                <!-- OVERLAY GELAP BAWAH -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80"></div>
+
+                <!-- INFO ATAS KIRI (BADGE) -->
+                <div class="absolute top-3 left-3">
+                    <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded border ${badgeColorClass} shadow-sm">
+                        ${labelText}
+                    </span>
+                </div>
+
+                <!-- INFO BAWAH -->
+                <div class="absolute bottom-0 left-0 w-full p-4 md:p-6 text-left">
+                    <h3 class="text-white font-serif text-xl md:text-2xl italic leading-tight mb-1 group-hover:text-amber-400 transition">
+                        ${val.title}
+                    </h3>
+                    <p class="text-gray-300 text-xs md:text-sm line-clamp-1 mb-2 font-light">
+                        ${val.tagline}
+                    </p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-white font-bold text-sm bg-white/20 px-3 py-1 rounded backdrop-blur-sm border border-white/10">
+                            RM ${val.price}
+                        </span>
+                        <span class="text-xs text-white/70">
+                            / Sesi
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- HOVER ACTION (Mobile Hidden) -->
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition duration-300 hidden md:block">
+                    <div class="bg-white/20 backdrop-blur-md rounded-full p-3 border border-white/30 text-white">
+                        <i class="fas fa-arrow-right text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        gridContainer.innerHTML += cardHTML;
+    }
+
+    // Fade in effect
+    setTimeout(() => { gridContainer.style.opacity = 1; }, 50);
+}
 
 
 /* --- 2. THEME DETAIL POPUP LOGIC --- */
