@@ -194,6 +194,37 @@ function nextStep(step) {
 
             // Trigger payment styling update
             setPaymentType(bookingData.paymentType === "DEPOSIT" ? 'deposit' : 'full');
+
+            // --- RESET TNC STATE (TAMBAH KOD INI) ---
+            const chk = document.getElementById('tnc-checkbox');
+            const box = document.getElementById('tnc-scroll-box');
+            const hint = document.getElementById('tnc-hint');
+            const btnSubmit = document.getElementById('btn-confirm-wa');
+
+            // Reset semua jadi "Belum Baca"
+            chk.checked = false;
+            chk.disabled = true; 
+            document.getElementById('tnc-label').className = "text-xs text-gray-400";
+        
+            // Reset Text Hint
+            hint.innerHTML = '<i class="fas fa-arrow-down"></i> Sila scroll kotak di atas sampai habis untuk setuju.';
+            hint.className = "text-[10px] text-amber-600 italic text-center mb-2 animate-pulse";
+        
+            // Reset Scroll position ke atas
+            box.scrollTop = 0; 
+
+            // Matikan butang submit
+            btnSubmit.disabled = true;
+            btnSubmit.classList.add('opacity-50', 'cursor-not-allowed', 'grayscale');
+        
+            // PENTING: Safety check (kalau skrin besar & tak perlu scroll)
+            // Kalau teks pendek sgt sampai tak perlu scroll, kita terus unlock.
+            setTimeout(() => {
+                if (box.scrollHeight <= box.clientHeight) {
+                    chk.disabled = false;
+                    hint.innerText = "Sila tanda kotak di bawah.";
+                }
+            }, 500);
         }
 
         currentStep = step;
@@ -671,4 +702,43 @@ function isSlotExpired(slotTimeStr, selectedDateStr) {
     }
 
     return false; // Available
+}
+
+/* --- T&C LOGIC (SCROLL TO UNLOCK) --- */
+
+function checkScrollTnC() {
+    const box = document.getElementById('tnc-scroll-box');
+    const chk = document.getElementById('tnc-checkbox');
+    const label = document.getElementById('tnc-label');
+    const hint = document.getElementById('tnc-hint');
+
+    // Formula: ScrollTop + ClientHeight >= ScrollHeight (tolak sikit margin error 5px)
+    if ((box.scrollTop + box.clientHeight) >= (box.scrollHeight - 5)) {
+        
+        // UNLOCK!
+        if (chk.disabled) {
+            chk.disabled = false; // Hidupkan checkbox
+            label.className = "text-xs text-gray-900 font-bold cursor-pointer transition"; // Hitamkan teks
+            
+            // Ubah hint
+            hint.innerHTML = `<i class="fas fa-check-circle text-green-500"></i> Terima kasih. Sila tanda kotak di bawah.`;
+            hint.className = "text-[10px] text-green-600 text-center mb-2 font-bold";
+        }
+    }
+}
+
+function toggleSubmitButton() {
+    const chk = document.getElementById('tnc-checkbox');
+    const btn = document.getElementById('btn-confirm-wa');
+    
+    // Kalau tick -> Button Hidup. Kalau tak -> Button Mati
+    if(chk.checked) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-50', 'cursor-not-allowed', 'grayscale');
+        btn.classList.add('shadow-xl', 'hover:scale-[1.02]');
+    } else {
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed', 'grayscale');
+        btn.classList.remove('shadow-xl', 'hover:scale-[1.02]');
+    }
 }

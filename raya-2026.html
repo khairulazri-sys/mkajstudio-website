@@ -406,6 +406,41 @@
                         </div>
 
                         <!-- 4. SUBMIT ACTION -->
+                        <!-- KOD TNC SCROLL-TO-UNLOCK (Masukkan dalam Step 4) -->
+
+                        <div class="mb-6 text-left">
+                            <h4 class="text-xs font-bold text-gray-500 uppercase mb-2">Terma & Syarat (Wajib Baca)</h4>
+    
+                            <!-- 1. KOTAK SCROLL (Wajib scroll untuk unlock) -->
+                            <div id="tnc-scroll-box" class="h-24 bg-gray-50 border border-gray-300 rounded p-3 text-[11px] text-gray-600 leading-relaxed overflow-y-auto mb-2 shadow-inner" onscroll="checkScrollTnC()">
+                                <p class="font-bold text-red-500 mb-1">1. MASA:</p>
+                                <p class="mb-2">Sila tiba 15 minit awal. Sesi bermula tepat pada masa. Lewat akan menyebabkan masa shooting dipotong. Tiada ganti masa.</p>
+        
+                                <p class="font-bold text-black mb-1">2. BAYARAN:</p>
+                                <p class="mb-2">Deposit RM50 adalah NON-REFUNDABLE jika batal kurang dari 72 jam sebelum tarikh. Pembayaran penuh perlu diselesaikan selepas sesi.</p>
+        
+                                <p class="font-bold text-black mb-1">3. KUOTA PAX:</p>
+                                <p class="mb-2">Had bilangan orang (Family/Couple) adalah muktamad atas faktor keselamatan studio. Caj dikenakan jika melebihi had.</p>
+        
+                                <p class="font-bold text-black mb-1">4. EDITING:</p>
+                                <p>Softcopy (Google Drive) diberikan dalam masa 5-7 hari bekerja. Percuma basic color grading sahaja.</p>
+                            </div>
+
+                            <!-- HINT TEXT -->
+                            <p id="tnc-hint" class="text-[10px] text-amber-600 italic text-center mb-2 animate-pulse">
+                                <i class="fas fa-arrow-down"></i> Sila scroll kotak di atas sampai habis untuk setuju.
+                            </p>
+
+                            <!-- 2. CHECKBOX (Asal: Disabled) -->
+                            <label class="flex items-start gap-3 cursor-pointer group select-none">
+                                <!-- Checkbox ini disable mula-mula -->
+                                <input type="checkbox" id="tnc-checkbox" class="mt-1 w-4 h-4 accent-green-600 disabled:bg-gray-200 disabled:cursor-not-allowed" disabled onchange="toggleSubmitButton()">
+        
+                                <span id="tnc-label" class="text-xs text-gray-400 group-hover:text-black transition">
+                                    Saya faham dan bersetuju dengan syarat di atas.
+                                </span>
+                            </label>
+                        </div>
                         <div class="flex items-center gap-4 border-t pt-4">
                             <button onclick="nextStep(3)" class="text-gray-400 text-xs uppercase font-bold tracking-widest hover:text-black">Ubah Detail</button>
                             <button id="btn-confirm-wa" onclick="submitBooking()" class="flex-grow bg-green-500 text-white py-4 rounded-xl font-bold shadow-xl shadow-green-200 hover:bg-green-600 hover:scale-[1.02] transition flex items-center justify-center gap-2">
