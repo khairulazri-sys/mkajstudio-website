@@ -201,30 +201,6 @@ function nextStep(step) {
             const hint = document.getElementById('tnc-hint');
             const btnSubmit = document.getElementById('btn-confirm-wa');
 
-            // Reset semua jadi "Belum Baca"
-            chk.checked = false;
-            chk.disabled = true; 
-            document.getElementById('tnc-label').className = "text-xs text-gray-400";
-        
-            // Reset Text Hint
-            hint.innerHTML = '<i class="fas fa-arrow-down"></i> Sila scroll kotak di atas sampai habis untuk setuju.';
-            hint.className = "text-[10px] text-amber-600 italic text-center mb-2 animate-pulse";
-        
-            // Reset Scroll position ke atas
-            box.scrollTop = 0; 
-
-            // Matikan butang submit
-            btnSubmit.disabled = true;
-            btnSubmit.classList.add('opacity-50', 'cursor-not-allowed', 'grayscale');
-        
-            // PENTING: Safety check (kalau skrin besar & tak perlu scroll)
-            // Kalau teks pendek sgt sampai tak perlu scroll, kita terus unlock.
-            setTimeout(() => {
-                if (box.scrollHeight <= box.clientHeight) {
-                    chk.disabled = false;
-                    hint.innerText = "Sila tanda kotak di bawah.";
-                }
-            }, 500);
         }
 
         currentStep = step;
@@ -269,7 +245,7 @@ function checkThemeType() {
     const catLabel = document.getElementById('bk-cat-label');
     if(catLabel) {
         if(bookingData.themeType === 'couple') {
-            catLabel.innerText = "KATEGORI COUPLE (MAX 2 DEWASA + 2 KIDS)";
+            catLabel.innerText = "KATEGORI COUPLE (MAX 4 PAX)";
             catLabel.className = "text-[10px] font-bold mt-1 tracking-widest uppercase text-pink-500";
         } else {
             catLabel.innerText = "KATEGORI FAMILY (COVER 6 PAX)";
@@ -302,37 +278,69 @@ function checkThemeType() {
     updatePaxConstraintUI();
 }
 
+/* DALAM FUNCTION updatePaxConstraintUI() */
+
 function updatePaxConstraintUI() {
     const warningText = document.getElementById('pax-warning');
+    
+    // RESET Value default
+    // Dulu kita set PaxAdult = 2, sekarang boleh set 2 (sebagai standard) 
+    // Tapi user boleh ubah jadi 4 dewasa 0 budak.
     bookingData.paxKids = 0; 
 
     if (bookingData.themeType === 'couple') {
-        bookingData.paxAdult = 2; 
-        if(warningText) warningText.innerText = "* Kategori Couple: 2 Dewasa + 2 Kanak-kanak sahaja.";
+        bookingData.paxAdult = 2; // Default starting
+        
+        // TEKS BARU
+        warningText.innerText = "* Kategori Couple/Mini: Maksima 4 Orang (Gabungan Dewasa & Kanak-kanak).";
+        warningText.className = "text-xs text-pink-600 font-bold mb-1"; 
     } else {
+        // Family kekal
         bookingData.paxAdult = bookingData.basePaxLimit; 
-        if(warningText) warningText.innerText = `* Kategori Family cover ${bookingData.basePaxLimit} Dewasa. Extra +RM10.`;
+        warningText.innerText = `* Kategori Family cover ${bookingData.basePaxLimit} Dewasa. Extra +RM10/pax.`;
+        warningText.className = "text-xs text-green-700 font-bold mb-1";
     }
+
     refreshPaxUI();
 }
+
+/* DALAM FUNCTION updatePax(type, change) */
 
 function updatePax(type, change) {
     let currA = bookingData.paxAdult;
     let currK = bookingData.paxKids;
 
-    if (type === 'adult') { currA += change; if(currA < 1) return; }
-    else { currK += change; if(currK < 0) return; }
+    // Tambah/Tolak dulu secara sementara
+    if (type === 'adult') currA += change;
+    else currK += change;
 
-    // Constraints
+    // Minimum check
+    if (currA < 1) return; // Min 1 dewasa wajib
+    if (currK < 0) return; 
+
+    // --- LOGIC CONSTRAINT BARU ---
+    
     if (bookingData.themeType === 'couple') {
-        if(type==='adult' && currA > 2) { alert("Max 2 Dewasa utk Couple Theme"); return; }
-        if(type==='kid' && currK > 2) { alert("Max 2 Kids utk Couple Theme"); return; }
+        // KIRA TOTAL SEMUA
+        let totalOrang = currA + currK;
+        
+        // Rule: Tak kisah kombinasi, asalkan TOTAL tak lebih 4
+        if (totalOrang > 4) {
+            alert("Maaf, Pakej RM89 terhad untuk 4 Pax sahaja (Total Dewasa + Kanak-kanak).");
+            return; // Jangan update data
+        }
     } else {
-        if((currA + currK) > 20) { alert("Studio Full (Max 20)"); return; }
+        // Rule Family: Studio Max 20
+        if((currA + currK) > 20) { 
+            alert("Studio Full (Max 20 Pax)."); 
+            return; 
+        }
     }
 
+    // Update Data
     bookingData.paxAdult = currA;
     bookingData.paxKids = currK;
+    
     refreshPaxUI();
 }
 
@@ -702,43 +710,4 @@ function isSlotExpired(slotTimeStr, selectedDateStr) {
     }
 
     return false; // Available
-}
-
-/* --- T&C LOGIC (SCROLL TO UNLOCK) --- */
-
-function checkScrollTnC() {
-    const box = document.getElementById('tnc-scroll-box');
-    const chk = document.getElementById('tnc-checkbox');
-    const label = document.getElementById('tnc-label');
-    const hint = document.getElementById('tnc-hint');
-
-    // Formula: ScrollTop + ClientHeight >= ScrollHeight (tolak sikit margin error 5px)
-    if ((box.scrollTop + box.clientHeight) >= (box.scrollHeight - 5)) {
-        
-        // UNLOCK!
-        if (chk.disabled) {
-            chk.disabled = false; // Hidupkan checkbox
-            label.className = "text-xs text-gray-900 font-bold cursor-pointer transition"; // Hitamkan teks
-            
-            // Ubah hint
-            hint.innerHTML = `<i class="fas fa-check-circle text-green-500"></i> Terima kasih. Sila tanda kotak di bawah.`;
-            hint.className = "text-[10px] text-green-600 text-center mb-2 font-bold";
-        }
-    }
-}
-
-function toggleSubmitButton() {
-    const chk = document.getElementById('tnc-checkbox');
-    const btn = document.getElementById('btn-confirm-wa');
-    
-    // Kalau tick -> Button Hidup. Kalau tak -> Button Mati
-    if(chk.checked) {
-        btn.disabled = false;
-        btn.classList.remove('opacity-50', 'cursor-not-allowed', 'grayscale');
-        btn.classList.add('shadow-xl', 'hover:scale-[1.02]');
-    } else {
-        btn.disabled = true;
-        btn.classList.add('opacity-50', 'cursor-not-allowed', 'grayscale');
-        btn.classList.remove('shadow-xl', 'hover:scale-[1.02]');
-    }
 }

@@ -586,7 +586,7 @@ function openThemeDetails(key) {
         catBadge.className = `inline-block px-3 py-1 rounded text-[10px] font-bold tracking-widest uppercase mb-4 w-max border ${data.colorClass || 'text-green-600 bg-green-50 border-green-200'}`;
     }
     if (paxInfo) {
-        paxInfo.innerText = data.type === 'couple' ? "Max 2 Dewasa + 2 Kids" : `Cover ${data.paxCover} Dewasa`;
+        paxInfo.innerText = data.type === 'couple' ? "Max 4 Pax" : `Cover ${data.paxCover} Dewasa`;
     }
 
     // 2. SETUP SLIDESHOW GAMBAR (SWIPER) - BAHAGIAN KRITIKAL FIX
@@ -658,18 +658,51 @@ function openThemeDetails(key) {
     }
 }
 
+/* assets/js/main.js - Update function bookCurrentTheme() */
+
+// --- GLOBAL VARIABLES (untuk simpan data sementara masa baca TNC) ---
+let pendingBookingData = null;
+
+// Function ini dipanggil bila tekan "PILIH TEMA INI"
 function bookCurrentTheme() {
-    closeThemeModal();
+    closeThemeModal(); // Tutup popup info tema
+    
+    // Simpan data tema dalam variable sementara
     const data = rayaThemesDetail[currentThemeKey];
     if (!data) return;
 
-    // Set Label Kategori
-    const categoryLabel = data.type === 'couple' ? 'Kategori Couple' : 'Kategori Family';
-    
-    if (typeof openBookingWizard === 'function') {
-        // HANTAR PARAMETER KE-5: data.title
-        // openBookingWizard(Label, Harga, Limit, Type, TajukTemaSebenar)
-        openBookingWizard(categoryLabel, data.price, data.paxCover, data.type, data.title);
+    // Simpan apa yg user pilih
+    pendingBookingData = {
+        categoryLabel: data.type === 'couple' ? 'KATEGORI COUPLE' : 'KATEGORI FAMILY',
+        price: data.price,
+        paxCover: data.paxCover,
+        type: data.type,
+        title: data.title
+    };
+
+    // Buka TNC Modal dulu!
+    document.getElementById('tnc-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeTncModal() {
+    document.getElementById('tnc-modal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+// Function bila user tekan "SETUJU" dekat TNC
+function agreeAndProceed() {
+    closeTncModal(); // Tutup TNC
+
+    if(pendingBookingData && typeof openBookingWizard === 'function') {
+        // Teruskan buka borang dengan data yg disimpan tadi
+        openBookingWizard(
+            pendingBookingData.categoryLabel, 
+            pendingBookingData.price, 
+            pendingBookingData.paxCover, 
+            pendingBookingData.type, 
+            pendingBookingData.title
+        );
     }
 }
 
@@ -706,5 +739,60 @@ function bookThisTheme(pkgName) {
         }, 300); // Tunggu modal buka
     } else {
         alert("System error: Booking module not loaded.");
+    }
+}
+
+/* --- RENDER CONTENT DINAMIK (TNC & FAQ) --- */
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Jalankan function ini bila page load
+    renderTncAndFaq();
+});
+
+function renderTncAndFaq() {
+    // 1. RENDER T&C (Dalam Popup)
+    const tncContainer = document.getElementById('tnc-dynamic-list');
+    if (tncContainer && typeof tncList !== 'undefined') {
+        tncContainer.innerHTML = "";
+        
+        tncList.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.className = "flex gap-3 text-sm text-gray-700";
+            li.innerHTML = `
+                <span class="font-bold text-amber-600 flex-shrink-0">${index + 1}.</span>
+                <span><strong class="text-black">${item.title}:</strong> ${item.desc}</span>
+            `;
+            tncContainer.appendChild(li);
+        });
+    }
+
+    // 2. RENDER FAQ (Dalam Section Bawah)
+    const faqContainer = document.getElementById('faq-dynamic-container');
+    if (faqContainer && typeof faqList !== 'undefined') {
+        faqContainer.innerHTML = "";
+
+        faqList.forEach(grp => {
+            // HTML Structure untuk Accordion (Dropdown)
+            const details = document.createElement('details');
+            details.className = "group bg-white rounded-lg shadow-sm border border-gray-200";
+            
+            // Jana isi soalan & jawapan
+            let qaHTML = "";
+            grp.content.forEach(qa => {
+                qaHTML += `<div class="mb-3 last:mb-0"><p class="font-bold text-gray-800 text-xs mb-1">Q: ${qa.q}</p><p class="text-gray-500 text-xs">A: ${qa.a}</p></div>`;
+            });
+
+            details.innerHTML = `
+                <summary class="flex justify-between items-center font-bold cursor-pointer p-4 list-none text-gray-800 group-hover:text-amber-600 transition select-none">
+                    <span>${grp.category}</span>
+                    <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                </summary>
+                <div class="px-4 pb-4 animate-fadeIn border-t border-gray-50 pt-2">
+                    ${qaHTML}
+                </div>
+            `;
+            
+            faqContainer.appendChild(details);
+        });
     }
 }

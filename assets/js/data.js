@@ -194,7 +194,7 @@ const rayaThemesDetail = {
         type: "family",
         categoryName: "FAMILY (6 PAX)",
         colorClass: "text-green-600 bg-green-50 border-green-200", // UI Class Hijau
-        price: 139,
+        price: 129,
         paxCover: 6, // Base cover 6
         tagline: "Elegance & Luxury.",
         desc: "Set mewah dengan latar belakang velvet. Sesuai untuk baju raya berwarna gelap dan mewah.",
@@ -205,7 +205,7 @@ const rayaThemesDetail = {
             "Sesi Fotografi 20 Minit",
             "Unlimited Shooting",
             "Semua Gambar (Softcopy)",
-            "Percuma Editing (Color Grade)",
+            "Percuma Basic Editing",
             "Cover 6 Dewasa"
         ]
     },
@@ -214,7 +214,7 @@ const rayaThemesDetail = {
         type: "family",
         categoryName: "FAMILY (6 PAX)",
         colorClass: "text-green-600 bg-green-50 border-green-200", // UI Class Hijau
-        price: 139,
+        price: 129,
         paxCover: 6, // Base cover 6
         tagline: "Pure & Timeless.",
         desc: "Latar belakang serba putih dengan prop minimalis. Sesuai untuk baju raya moden dan kontemporari.",
@@ -225,7 +225,7 @@ const rayaThemesDetail = {
             "Sesi Fotografi 20 Minit",
             "Unlimited Shooting",
             "Semua Gambar (Softcopy)",
-            "Percuma Editing (Color Grade)",
+            "Percuma Basic Editing",
             "Cover 6 Dewasa"
         ]
     },
@@ -234,7 +234,7 @@ const rayaThemesDetail = {
         type: "family",
         categoryName: "FAMILY (6 PAX)",
         colorClass: "text-green-600 bg-green-50 border-green-200", // UI Class Hijau
-        price: 139,
+        price: 129,
         paxCover: 6, // Base cover 6
         tagline: "Nostalgia & Warmth.",
         desc: "Set kampung tradisional dengan elemen kayu dan anyaman. Sesuai untuk baju raya klasik dan tradisional.",
@@ -245,7 +245,7 @@ const rayaThemesDetail = {
             "Sesi Fotografi 20 Minit",
             "Unlimited Shooting",
             "Semua Gambar (Softcopy)",
-            "Percuma Editing (Color Grade)",
+            "Percuma Basic Editing",
             "Cover 6 Dewasa"
         ]
     },
@@ -254,7 +254,7 @@ const rayaThemesDetail = {
         type: "family",
         categoryName: "FAMILY (6 PAX)",
         colorClass: "text-green-600 bg-green-50 border-green-200", // UI Class Hijau
-        price: 139,
+        price: 129,
         paxCover: 6, // Base cover 6
         tagline: "Radiance & Grace.",
         desc: "Set ala timur tengah dengan elemen seni Islamik. Sesuai untuk baju raya berinspirasikan Arab dan moden.",
@@ -265,7 +265,7 @@ const rayaThemesDetail = {
             "Sesi Fotografi 20 Minit",
             "Unlimited Shooting",
             "Semua Gambar (Softcopy)",
-            "Percuma Editing (Color Grade)",
+            "Percuma Basic Editing",
             "Cover 6 Dewasa"
         ]
     },
@@ -274,12 +274,12 @@ const rayaThemesDetail = {
     'midnight': {
         title: "Midnight Luxury",
         type: "couple",
-        categoryName: "COUPLE (2 PAX + 2 KIDS)", // Label Kategori
+        categoryName: "COUPLE / MINI (MAX 4 PAX)", // Label Kategori
         colorClass: "text-pink-500 bg-pink-50 border-pink-200", // UI Class Pink
-        price: 99,
-        paxCover: 2, // Base cover 2 Dewasa
+        price: 89,
+        paxCover: 4, // Base cover 2 Dewasa
         tagline: "Romance & Intimacy.",
-        desc: "Tema mewah dengan latar belakang gelap dan pencahayaan lembut. Sesuai untuk OOTD couple raya. (Max 2 Dewasa, 2 Kanak-kanak).",
+        desc: "Tema mewah dengan latar belakang gelap dan pencahayaan lembut. Sesuai untuk OOTD couple raya. (max 4 pax).",
         images: ["assets/images/themes/midnight-luxury.webp",
                 "assets/images/themes/midnight-luxury.webp"
         ],
@@ -287,19 +287,20 @@ const rayaThemesDetail = {
             "Sesi Fotografi 15 Minit",
             "Unlimited Shooting",
             "Semua Gambar (Softcopy)",
-            "Percuma Editing (Color Grade)",
-            "Limit: 2 Dewasa + 2 Kanak-kanak"
+            "Percuma Basic Editing",
+            "Cover Max 4 Pax (Dewasa + Kanak-kanak)",
+            "Tiada caj tambahan selagi ≤ 4 Pax"
         ]
     },
     'secret': {
         title: "Secret Garden",
         type: "couple",
-        categoryName: "COUPLE (2 PAX + 2 KIDS)", // Label Kategori
+        categoryName: "COUPLE / MINI (MAX 4 PAX)", // Label Kategori
         colorClass: "text-pink-500 bg-pink-50 border-pink-200", // UI Class Pink
-        price: 99,
-        paxCover: 2, // Base cover 2 Dewasa
+        price: 89,
+        paxCover: 4, // Base cover 2 Dewasa
         tagline: "Nature & Love.",
-        desc: "Tema floral tertutup. Sesuai untuk OOTD couple raya. (Max 2 Dewasa, 2 Kanak-kanak).",
+        desc: "Tema floral tertutup. Sesuai untuk OOTD couple raya. (max 4 pax).",
         images: ["assets/images/themes/secret-garden.webp",
                 "assets/images/themes/secret-garden.webp"
         ],
@@ -307,10 +308,96 @@ const rayaThemesDetail = {
             "Sesi Fotografi 15 Minit",
             "Unlimited Shooting",
             "Semua Gambar (Softcopy)",
-            "Percuma Editing (Color Grade)",
-            "Limit: 2 Dewasa + 2 Kanak-kanak"
+            "Percuma Basic Editing",
+            "Cover Max 4 Pax (Dewasa + Kanak-kanak)",
+            "Tiada caj tambahan selagi ≤ 4 Pax"
         ]
     }
 };
 
 // ... Data Gallery lain kekalkan jika ada ...
+/* --- assets/js/data.js --- */
+
+// ... (Kod tema raya & hero yang sedia ada biarkan di atas) ...
+
+// 1. DATA TERMA & SYARAT (Untuk Popup T&C)
+const tncList = [
+    {
+        title: "Tempahan & Bayaran",
+        desc: "Tempahan hanya sah selepas deposit dibuat. Slot adalah terhad. Bayaran deposit adalah <u>NON-REFUNDABLE</u>."
+    },
+    {
+        title: "Pembatalan",
+        desc: "Jika batal, bayaran hangus. Penjadualan semula (reschedule) dibenarkan <strong>sekali sahaja</strong> (48 jam sebelum sesi)."
+    },
+    {
+        title: "Ketepatan Masa",
+        desc: "Wajib tiba <strong>15 minit awal</strong>. Lewat akan menyebabkan masa sesi dipotong atau dibatalkan tanpa refund."
+    },
+    {
+        title: "Pakej & Peserta",
+        desc: "Bilangan peserta ikut had kategori (Family/Couple). Peserta tambahan dikenakan caj sebanyak RM10 setiap peserta."
+    },
+    {
+        title: "Caj Tambahan Hari Raya",
+        desc: "Bagi tempahan pada hari raya(1,2,3 Syawal), caj tambahan RM10 dikenakan untuk setiap sesi."
+    },
+    {
+        title: "Gambar & Editing",
+        desc: "Gambar siap dalam 2-3 hari bekerja. Termasuk basic editing sahaja. Permintaan edit lanjut dikenakan caj tambahan."
+    },
+    {
+        title: "Hak Cipta",
+        desc: "Studio berhak menggunakan gambar untuk tujuan portfolio & pemasaran (melainkan dimaklumkan untuk privasi)."
+    },
+    {
+        title: "Lain-lain",
+        desc: "Studio tidak bertanggungjawab atas sebarang kehilangan atau kerosakan barang peribadi semasa sesi. Studio berhak mengubah terma dan syarat tanpa notis."
+    }
+];
+
+// 2. DATA FAQ (Untuk Section Bawah)
+const faqList = [
+    {
+        category: "Lokasi & Kemudahan",
+        content: [
+            { q: "Dimana studio raya by mkajstudio beroperasi?", a: "Tahun ini kami beroperasi di Dewan Datuk Seri Abu Seman, Masjid Tanah." },
+            { q: "Apa kemudahan yang disediakan?", a: "Studio menyediakan ruang fotografi yang nyaman dan lengkap dengan bilik persalinan." }
+        ]
+    },
+    {
+        category: "Tempahan & Bayaran",
+        content: [
+            { q: "Kenapa bayaran tak boleh pulang?", a: "Sebab slot dikunci khas untuk anda dan menolak pelanggan lain." },
+            { q: "Boleh transfer slot ke orang lain?", a: "Tidak dibenarkan tanpa persetujuan admin." }
+        ]
+    },
+    {
+        category: "Penjadualan Semula",
+        content: [
+            { q: "Boleh tukar tarikh/masa?", a: "Boleh <strong>sekali sahaja</strong> jika dimaklumkan 48 jam awal." },
+            { q: "Jika studio batalkan?", a: "Kami akan beri refund penuh atau ganti slot baru." }
+        ]
+    },
+    {
+        category: "Hari Kejadian",
+        content: [
+            { q: "Kena datang awal?", a: "Ya, 10-15 minit awal untuk touch-up dan persiapan." },
+            { q: "Kalau saya lewat?", a: "Masa shooting berjalan terus. Tiada extra time diberikan." }
+        ]
+    },
+    {
+        category: "Pakaian & Prop",
+        content: [
+            { q: "Studio sedia baju?", a: "Tidak. Sila bawa baju raya sendiri." },
+            { q: "Prop ada?", a: "Ya, prop asas tema raya disediakan lengkap." }
+        ]
+    },
+    {
+        category: "Hasil Gambar",
+        content: [
+            { q: "Bila siap?", a: "Anggaran 2-3 Hari bekerja" },
+            { q: "Gambar siap edit ke?", a: "Ya, semua gambar telah diedit(basic edit)." }
+        ]
+    }
+];
