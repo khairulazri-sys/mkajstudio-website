@@ -176,7 +176,7 @@ function nextStep(step) {
             
             // Format Pax string
             let paxStr = `${bookingData.paxAdult} Dewasa`;
-            if(bookingData.paxKids > 0) paxStr += `, ${bookingData.paxKids} Budak`;
+            if(bookingData.paxKids > 0) paxStr += `, ${bookingData.paxKids} Kanak-kanak`;
             setText('rev-pax', paxStr);
 
             // --- UPDATE BARU: UI EXTRA/SURCHARGE ---
@@ -285,7 +285,7 @@ function updatePaxConstraintUI() {
     
     // RESET Value default
     // Dulu kita set PaxAdult = 2, sekarang boleh set 2 (sebagai standard) 
-    // Tapi user boleh ubah jadi 4 dewasa 0 budak.
+    // Tapi user boleh ubah jadi 4 dewasa 0 kanak-kanak.
     bookingData.paxKids = 0; 
 
     if (bookingData.themeType === 'couple') {
@@ -454,7 +454,7 @@ function submitBooking() {
         theme: bookingData.theme,
         date: bookingData.date,
         time: bookingData.time,
-        pax: `${bookingData.paxAdult} Dewasa, ${bookingData.paxKids} Budak`,
+        pax: `${bookingData.paxAdult} Dewasa, ${bookingData.paxKids} Kanak-kanak`,
         addOns: bookingData.addOns,
         totalPrice: bookingData.total,
         paymentType: bookingData.paymentType,
